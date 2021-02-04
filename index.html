@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>List | MySQL App</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col">
+
+
+                <a href="http://127.0.0.1:5502/create.html" class="btn btn-primary btn-sm float-sm-right"> <i
+                        class="fas fa-plus"></i>
+                    Add</a>
+                <h1>Posts</h1>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Body</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loading from Server -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:5000/api/',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: (response) => {
+                    let posts = '';
+                    response.forEach(post => {
+                        posts +=
+                            `<tr>
+                                    <td>${post.id}</td>
+                                    <td>${post.title}</td>
+                                    <td>${post.body}</td>
+                                    <td class="text-center">
+                                       <a href="http://127.0.0.1:5502/view.html?id=${post.id}" class="btn btn-info btn-sm">View</a>
+                                       <a href="http://127.0.0.2:5502/edit.html?id=${post.id}" type="button" class="btn btn-warning btn-sm ">Edit</a>
+                                       <a href="" type="button" class="btn btn-danger btn-sm " onclick="onDelete()">Delete</a>
+                                       </td>
+                             </tr>`
+
+                    });
+
+                    $('table tbody').append(posts);
+
+                }, error: function (err) {
+                    console.log('error', err)
+
+                }
+            })
+
+        });
+        function onDelete(){
+            $.ajax({
+                type:'DELETE',
+                url: 'http://localhost:5000/api/',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: (response) => {
+                    }
+            });
+        }
+    </script>
+</body>
+
+</html>
